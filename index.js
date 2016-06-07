@@ -30,7 +30,7 @@ jQuery(function() {
                     }).done(function(r) {
 
                         console.log("received response");
-                    });
+                    }).promise();
 
                     while (!dfd.isResolved() ||
                         !dfd.isRejected()) {
