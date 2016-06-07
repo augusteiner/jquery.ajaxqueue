@@ -20,7 +20,7 @@ jQuery(function(){
             handlr.then(function(action){
                 return function(){
                     $.ajax({
-                        url: this.action
+                        url: action
                     }).done(function(r) {
                         console.log(r);
                     });
