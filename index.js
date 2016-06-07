@@ -17,13 +17,15 @@ jQuery(function(){
             e.preventDefault();
 
             // XXX Trying better ajax handling
-            handlr.then(function(){
-                $.ajax({
-                    url: this.action
-                }).done(function(r) {
-                    console.log(r);
-                });
-            });
+            handlr.then(function(action){
+                return function(){
+                    $.ajax({
+                        url: this.action
+                    }).done(function(r) {
+                        console.log(r);
+                    });
+                };
+            }(this.action));
 
             console.log("request sent to " + this.action);
         });
