@@ -1,6 +1,6 @@
-jQuery(function () {
+jQuery(function() {
 
-    return function ($) {
+    return function($) {
 
         var handlr = $.when();
 
@@ -8,26 +8,26 @@ jQuery(function () {
             dataType: 'json',
             method: 'GET',
             timeout: 30000,
-            success: function () { },
-            error: function (xhr, e) { }
+            success: function() { },
+            error: function(xhr, e) { }
         });
 
-        $('#send').submit(function (e) {
+        $('#send').submit(function(e) {
 
             var $this = $(this);
 
             e.preventDefault();
 
             // XXX Trying better ajax handling
-            handlr = handlr.done(function (action) {
+            handlr = handlr.done(function(action) {
 
-                return function () {
+                return function() {
 
                     console.log("sending ajax request" + new Date());
 
                     var dfd = $.ajax({
                         url: action
-                    }).done(function (r) {
+                    }).done(function(r) {
 
                         console.log("received response");
                     });
@@ -41,5 +41,5 @@ jQuery(function () {
             }(this.action));
         });
     };
-}(jQuery.noConflict()));
+}(jQuery));
 
