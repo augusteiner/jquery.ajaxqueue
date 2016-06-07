@@ -16,6 +16,7 @@ jQuery(function(){
 
             e.preventDefault();
 
+            // XXX Trying better ajax handling
             handlr.then(function(){
                 $.ajax({
                     url: this.action
