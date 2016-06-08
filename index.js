@@ -107,6 +107,8 @@ jQuery(function($) {
 
                 output.val(output.val() + "\n" + i);
             }
+
+            console.log("finished workload, uff!");
         }
 
         $('#send').submit(function(e) {
