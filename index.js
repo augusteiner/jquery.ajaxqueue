@@ -48,10 +48,16 @@ jQuery(function($) {
                     console.log("url is null");
 
                     // XXX do not send $.ajax()
-                    dfd = $.Deferred().done(function() {
+                    dfd = $.Deferred().done(function(r) {
 
                         console.log("calling callback ...");
-                        callback(null, settings);
+
+                        try {
+                            callback(r);
+                        } catch (e) {
+                            queue.splice(0, queue.length);
+                            throw e;
+                        }
 
                         console.log("resolving next ...");
                         $this.resolveNext(queue);
@@ -62,17 +68,22 @@ jQuery(function($) {
 
                         console.log("sending $.ajax request ...");
 
-                        $.ajax(settings)
-                            .done(function(r) {
+                        $.ajax(settings).done(function(r) {
 
-                                console.log("calling callback ...");
+                            console.log("calling callback ...");
+
+                            try {
                                 callback(r);
+                            } catch (e) {
+                                queue.splice(0, queue.length);
+                                throw e;
+                            }
 
-                                console.log("callback called!");
+                            console.log("callback called!");
 
-                                console.log("resolving next ...");
-                                $this.resolveNext(queue);
-                            });
+                            console.log("resolving next ...");
+                            $this.resolveNext(queue);
+                        });
                     });
                 }
 
@@ -114,21 +125,28 @@ jQuery(function($) {
         }
 
         $('#send').submit(function(e) {
+            var $url = null;
             e.preventDefault();
 
             instance.send(
-                { data: { current : i }, url: "index.json" },
+                { data: { current : i }, url: $url },
                 function(r) {
                     console.log(r);
                     doSomeHardWork();
-                    console.log('aqui ' + (i++) + ' ...'); });
+                    console.log('aqui ' + (i++) + ' ...');
+
+                    if (i % 2 == 0) throw 'error';
+                });
 
             instance.send(
-                { data: { current : i }, url: "index.json" },
+                { data: { current : i }, url: $url },
                 function(r) {
                     console.log(r);
                     doSomeHardWork();
-                    console.log('aqui ' + (i++) + ' ...'); });
+                    console.log('aqui ' + (i++) + ' ...');
+
+                    if (i % 2 == 0) throw 'error';
+                });
         });
     };
 }(jQuery));
