@@ -103,6 +103,8 @@ jQuery(function($) {
 
         function doSomeHardWork() {
 
+            output.val('');
+
             for (var i = 0; i < workload; i++) {
 
                 output.val(output.val() + "\n" + i);
