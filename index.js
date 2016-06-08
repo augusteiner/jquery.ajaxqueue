@@ -99,16 +99,30 @@ jQuery(function($) {
     return function() {
         var i = 1;
 
+        function doSomeHardWork() {
+
+            for (var i = 0; i < 1000; i++) {
+
+                document.write(i + " ");
+            }
+        }
+
         $('#send').submit(function(e) {
             e.preventDefault();
 
             instance.send(
                 { data: { current : i }, url: "index.json" },
-                function() { console.log('aqui ' + (i++) + ' ...'); });
+                function(r) {
+                    console.log(r);
+                    doSomeHardWork();
+                    console.log('aqui ' + (i++) + ' ...'); });
 
             instance.send(
                 { data: { current : i }, url: "index.json" },
-                function() { console.log('aqui ' + (i++) + ' ...'); });
+                function(r) {
+                    console.log(r);
+                    doSomeHardWork();
+                    console.log('aqui ' + (i++) + ' ...'); });
         });
     };
 }(jQuery));
