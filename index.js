@@ -99,11 +99,11 @@ jQuery(function($) {
             e.preventDefault();
 
             instance.send(
-                { data: { current : i }, url: null },
+                { data: { current : i }, url: "index.json" },
                 function() { console.log('aqui ' + (i++) + ' ...'); });
 
             instance.send(
-                { data: { current : i }, url: null },
+                { data: { current : i }, url: "index.json" },
                 function() { console.log('aqui ' + (i++) + ' ...'); });
         });
     };
