@@ -60,11 +60,15 @@ jQuery(function($) {
 
                     dfd = $.Deferred().done(function() {
 
+                        console.log("sending $.ajax request ...");
+
                         $.ajax(settings)
                             .done(function(r) {
 
                                 console.log("calling callback ...");
                                 callback(r);
+
+                                console.log("callback called!");
 
                                 console.log("resolving next ...");
                                 $this.resolveNext(queue);
