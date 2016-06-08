@@ -1,4 +1,5 @@
 jQuery(function($) {
+    'use strict';
 
     var instance = new (function($) {
 
@@ -7,19 +8,19 @@ jQuery(function($) {
 
             var named = { };
 
-            var dfd = $.Deferred();
+            var dfd = null;
             var defaults = {
                 url: ""
             };
 
             // console.log(named);
 
-            this.resolveFirst = function(queue) {
+            this.resolveNext = function(queue) {
 
                 if (queue.length > 0) {
                     var dfd = queue.shift();
 
-                    console.log(dfd);
+                    // console.log(dfd);
 
                     dfd.resolve();
                 }
@@ -33,6 +34,7 @@ jQuery(function($) {
                 }
 
                 named[queueName] = named[queueName] || [];
+
                 var queue = named[queueName];
                 var $this = this;
                 var dfd = null;
@@ -48,9 +50,11 @@ jQuery(function($) {
                     // XXX do not send $.ajax()
                     dfd = $.Deferred().done(function() {
 
+                        console.log("calling callback ...");
                         callback(null, settings);
 
-                        $this.resolveFirst(queue);
+                        console.log("resolving next ...");
+                        $this.resolveNext(queue);
                     });
                 } else {
 
@@ -60,9 +64,11 @@ jQuery(function($) {
                             data,
                             function(r) {
 
+                                console.log("calling callback ...");
                                 callback(r);
 
-                                $this.resolveFirst(queue);
+                                console.log("resolving next ...");
+                                $this.resolveNext(queue);
                             },
                             settings);
                     });
@@ -76,7 +82,7 @@ jQuery(function($) {
                     setTimeout(
                         function() {
 
-                            $this.resolveFirst(queue);
+                            $this.resolveNext(queue);
 
                             console.log("resolved!");
                         }, 1000);
