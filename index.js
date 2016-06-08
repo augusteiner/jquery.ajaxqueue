@@ -105,7 +105,7 @@ jQuery(function($) {
 
             for (var i = 0; i < workload; i++) {
 
-                output.text(i + " ");
+                output.val(i + " ");
             }
         }
 
