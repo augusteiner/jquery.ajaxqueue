@@ -26,7 +26,7 @@ jQuery(function($) {
                 }
             };
 
-            this.send = function(data, callback, settings, queueName){
+            this.send = function(settings, callback, queueName){
 
                 if (queueName == null) {
 
@@ -39,7 +39,7 @@ jQuery(function($) {
                 var $this = this;
                 var dfd = null;
 
-                console.log(queue, queueName);
+                console.log(queue.length, queueName);
 
                 settings = $.extend({}, defaults, settings);
 
@@ -60,17 +60,15 @@ jQuery(function($) {
 
                     dfd = $.Deferred().done(function() {
 
-                        $.ajax(
-                            data,
-                            function(r) {
+                        $.ajax(settings)
+                            .done(function(r) {
 
                                 console.log("calling callback ...");
                                 callback(r);
 
                                 console.log("resolving next ...");
                                 $this.resolveNext(queue);
-                            },
-                            settings);
+                            });
                     });
                 }
 
@@ -94,33 +92,19 @@ jQuery(function($) {
         return Request;
     }($));
 
-    instance.send({ current: 1 }, function() { console.log('aqui 1...'); }, { url: "index.json" });
-    instance.send({ current: 2 }, function() { console.log('aqui 2...'); }, { url: "index.json" });
-
     return function() {
+        var i = 1;
 
         $('#send').submit(function(e) {
-            var handlr = $.Deferred();
-
-            var $this = $(this);
-
             e.preventDefault();
 
-            console.log("sending ajax request" + new Date());
+            instance.send(
+                { data: { current : i }, url: null },
+                function() { console.log('aqui ' + (i++) + ' ...'); });
 
-            var dfd = $.ajax({
-                url: this.action
-            }).done(function(r) {
-
-                console.log("received response");
-
-                handlr.resolve();
-            }).fail(function(r) {
-
-                handlr.reject();
-            });
-
-            while (handlr.state() == "pending");
+            instance.send(
+                { data: { current : i }, url: null },
+                function() { console.log('aqui ' + (i++) + ' ...'); });
         });
     };
 }(jQuery));
