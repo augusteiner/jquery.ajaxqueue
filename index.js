@@ -98,12 +98,14 @@ jQuery(function($) {
 
     return function() {
         var i = 1;
+        var output = $('#output');
+        var workload = parseInt($('#workload').val());
 
         function doSomeHardWork() {
 
-            for (var i = 0; i < 1000; i++) {
+            for (var i = 0; i < workload; i++) {
 
-                document.write(i + " ");
+                output.text(i + " ");
             }
         }
 
